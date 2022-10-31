@@ -1,0 +1,129 @@
+﻿// #define VERBOSE
+
+using UnityEngine;
+using System.Collections;
+using System.Runtime.InteropServices;
+using System;
+
+public static class Receiver
+{
+
+	private static bool isActivated = false;
+
+	[DllImport("__Internal")]
+	private static extern void set_callbacks(
+		delegate_V v,
+		delegate_Vi vi,
+		delegate_Vf vf,
+		delegate_Vs vs,
+		delegate_Vv3 vv3,
+		delegate_Vq vq,
+		delegate_Vtt vtt,
+		delegate_Vft vft);
+
+	delegate void delegate_V();
+	delegate void delegate_Vi(int i);
+	delegate void delegate_Vf(float f);
+	delegate void delegate_Vs(string s);
+	delegate void delegate_Vv3(Vector3 a);
+	delegate void delegate_Vq(Quaternion q);
+	delegate void delegate_Vtt(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov);
+	delegate void delegate_Vft(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov, string faceMeshData);
+
+	public static Action<
+		Vector3,
+		Quaternion,
+		Vector3,
+		float > onTargetTransformReceived;
+
+	public static Action<
+		Vector3,
+		Quaternion,
+		Vector3,
+		float,
+		string> onFacemeshTransformReceived;
+
+	public static void Activate()
+	{
+		if (!isActivated)
+		{
+			set_callbacks(
+				TargetV,
+				TargetVi,
+				TargetVf,
+				TargetVs,
+				TargetVv3,
+				TargetVq,
+				TargetVtt,
+				TargetVft);
+		}
+	}
+
+	[MonoPInvokeCallback(typeof(delegate_V))]
+	private static void TargetV()
+	{
+		//Debug.Log("Empty called");
+	}
+
+	[MonoPInvokeCallback(typeof(delegate_Vi))]
+	private static void TargetVi(int i)
+	{
+		//Debug.Log("Int: " + i);
+	}
+
+	[MonoPInvokeCallback(typeof(delegate_Vf))]
+	private static void TargetVf(float f)
+	{
+		//Debug.Log("Float: " + f);
+	}
+
+	[MonoPInvokeCallback(typeof(delegate_Vs))]
+	private static void TargetVs(string s)
+	{
+		//Debug.Log("String: " + s);
+	}
+
+	[MonoPInvokeCallback(typeof(delegate_Vv3))]
+	private static void TargetVv3(Vector3 a)
+	{
+		//Debug.Log("Vector3: " + a);
+	}
+
+	[MonoPInvokeCallback(typeof(delegate_Vq))]
+	private static void TargetVq(Quaternion q)
+	{
+		//Debug.Log("Quaternion: " + q);
+	}
+
+	[MonoPInvokeCallback(typeof(delegate_Vtt))]
+	private static void TargetVtt(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov)
+	{
+		onTargetTransformReceived?.Invoke(position, rotation, scale, cameraFov);
+	}
+
+	[MonoPInvokeCallback(typeof(delegate_Vft))]
+	private static void TargetVft(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov, string faceMeshData)
+	{
+		onFacemeshTransformReceived?.Invoke(position, rotation, scale, cameraFov, faceMeshData);
+	}
+
+
+
+	//Structs 
+	/*private struct TargetTransform
+	{
+		public Vector3 position;
+		public Quaternion rotation;
+		public Vector3 scale;
+		public float camerFOV;
+	}
+
+	private struct FaceTransform
+	{
+		public Vector3 position;
+		public Quaternion rotation;
+		public Vector3 scale;
+		public float camerFOV;
+		public string facemesh;
+	}*/
+}

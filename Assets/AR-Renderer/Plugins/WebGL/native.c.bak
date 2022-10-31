@@ -1,0 +1,68 @@
+// #define EMSCRIPTEN_KEEPALIVE
+
+#include <stdint.h>
+#include "emscripten.h"
+#include "native.h"
+
+callback_v cb_v;
+callback_vi cb_vi;
+callback_vf cb_vf;
+callback_vs cb_vs;
+callback_vv3 cb_vv3;
+callback_vq cb_vq;
+callback_vtt cb_vtt;
+callback_vft cb_vft;
+
+
+void set_callbacks(
+	callback_v p_v,
+	callback_vi p_vi,
+	callback_vf p_vf,
+	callback_vs p_vs,
+	callback_vv3 p_vv3,
+	callback_vq p_vq,
+	callback_vtt p_tt,
+	callback_vft p_ft
+)
+{
+	cb_v = p_v;
+	cb_vi = p_vi;
+	cb_vf = p_vf;
+	cb_vs = p_vs;
+	cb_vv3 = p_vv3;
+	cb_vq = p_vq;
+	cb_vtt = p_tt;
+	cb_vft = p_ft;
+}
+
+void EMSCRIPTEN_KEEPALIVE call_cb_v() {
+	cb_v();								//function without parameters
+}
+
+void EMSCRIPTEN_KEEPALIVE call_cb_vi(int32_t a) {
+	cb_vi(a);							//int
+}
+
+void EMSCRIPTEN_KEEPALIVE call_cb_vf(float a) {
+	cb_vf(a);							//float
+}
+
+void EMSCRIPTEN_KEEPALIVE call_cb_vs(const char *a) {
+	cb_vs(a);							//string
+}
+
+void EMSCRIPTEN_KEEPALIVE call_cb_vv3(struct Vector3 a) {
+	cb_vv3(a);							//Vector3
+}
+
+void EMSCRIPTEN_KEEPALIVE call_cb_vq(struct Quaternion q) {
+	cb_vq(q);							//Quaternion
+}
+
+void EMSCRIPTEN_KEEPALIVE call_cb_vtt(struct Vector3 pos,struct Quaternion rot, struct Vector3 sc, float cFov) {
+	cb_vtt(pos, rot, sc, cFov);			//Target transform
+}
+
+void EMSCRIPTEN_KEEPALIVE call_cb_vft(struct Vector3 pos,struct Quaternion rot, struct Vector3 sc, float cFov, const char *fm) {
+	cb_vft(pos, rot, sc, cFov, fm);		//Face transform
+}
