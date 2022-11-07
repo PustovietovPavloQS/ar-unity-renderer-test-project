@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class MasksController : MonoBehaviour
     [SerializeField] private Transform masksContainer;
     [SerializeField] private GameObject[] masksPrefabs;
     [SerializeField] private Button nextMaskButton;
-    [SerializeField] private ButtonStateSwitcher switcher;
+    [SerializeField] private MasksScrolling scrolling;
 
     private Queue<GameObject> masksQueue;
     private GameObject currentMask;
@@ -20,6 +21,7 @@ public class MasksController : MonoBehaviour
     {
         EnableMask(currentMaskIndex);
         nextMaskButton.onClick.AddListener(NextMask);
+        scrolling.onSelectedMaskChanged += ChangeMask;
     }
 
     // Update is called once per frame
@@ -35,7 +37,6 @@ public class MasksController : MonoBehaviour
     {
         if(currentMask) Destroy(currentMask.gameObject);
         
-        switcher.EnableNewButton(maskIndex);
         var newMaskPrefab = masksPrefabs[maskIndex];
         currentMask = Instantiate(newMaskPrefab, masksContainer);
     }
@@ -54,6 +55,20 @@ public class MasksController : MonoBehaviour
         currentMaskIndex++;
         if (currentMaskIndex >= masksPrefabs.Length) currentMaskIndex = 0;
         EnableMask(currentMaskIndex);
+        scrolling.ChangeSelectedMaskButton(currentMaskIndex);
+    }
+
+    private void ChangeMask(int newIndex)
+    {
+        if (newIndex == currentMaskIndex) return;
+
+        currentMaskIndex = newIndex;
+        if (currentMaskIndex >= masksPrefabs.Length)
+        {
+            Debug.LogError("You have button for mask but dont have the mask prefab for it");
+            currentMaskIndex = 0;
+        }
+        EnableMask(currentMaskIndex);
     }
     
     private void UpdateMask()
@@ -66,5 +81,10 @@ public class MasksController : MonoBehaviour
             currentMask = Instantiate(newMask, masksContainer);
             masksQueue.Enqueue(newMask);
         }
+    }
+
+    private void OnDestroy()
+    {
+        scrolling.onSelectedMaskChanged -= ChangeMask;
     }
 }

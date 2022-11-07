@@ -41,17 +41,18 @@ public class MasksScrolling : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (contentRect.anchoredPosition.x >= masksPos[0].x && !isScrolling ||
-            contentRect.anchoredPosition.x <= masksPos[^1].x && !isScrolling)
+        if (scrollRect.inertia && (contentRect.anchoredPosition.x >= masksPos[0].x && !isScrolling ||
+            contentRect.anchoredPosition.x <= masksPos[^1].x && !isScrolling))
         {
             scrollRect.inertia = false;
+            RecalculateCurrentMask();
         }
         
         float nearestPos = Mathf.Abs(contentRect.anchoredPosition.x - masksPos[selectedMaskID].x);
         for (int i = 0; i < maskButtons.Length; i++)
         {
             float distance = Mathf.Abs(contentRect.anchoredPosition.x - masksPos[i].x);
-            if (distance < nearestPos)
+            if (distance < nearestPos && (scrollRect.inertia || isScrolling))
             {
                 nearestPos = distance;
                 if (selectedMaskID != i)
@@ -66,7 +67,11 @@ public class MasksScrolling : MonoBehaviour
             maskButtons[i].transform.localScale = masksScale[i];
         }
         float scrollVelocity = Mathf.Abs(scrollRect.velocity.x);
-        if (scrollVelocity < 400 && !isScrolling) scrollRect.inertia = false;
+        if (scrollRect.inertia && scrollVelocity < 400 && !isScrolling)
+        {
+            scrollRect.inertia = false;
+            RecalculateCurrentMask();
+        }
         if (isScrolling || scrollVelocity > 400) return;
         contentVector.x = Mathf.SmoothStep(contentRect.anchoredPosition.x, masksPos[selectedMaskID].x, snapSpeed * Time.fixedDeltaTime);
         contentRect.anchoredPosition = contentVector;
@@ -78,19 +83,19 @@ public class MasksScrolling : MonoBehaviour
         if (scroll) scrollRect.inertia = true;
     }
 
-    private void ChangeSelectedMaskButton(int index)
+    private void RecalculateCurrentMask()
     {
-        selectedMaskID = index;
         onSelectedMaskChanged?.Invoke(selectedMaskID);
     }
 
-    private void RecalculateMasksPositions()
+    public void ChangeSelectedMaskButton(int index)
     {
-        
+        selectedMaskID = index;
     }
 
-    private void RecalculateMasksScales()
+    public void ChangeSelectedMaskButtonWithNotify(int index)
     {
-        
+        ChangeSelectedMaskButton(index);
+        RecalculateCurrentMask();
     }
 }

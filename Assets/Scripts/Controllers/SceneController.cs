@@ -20,20 +20,46 @@ public class SceneController : MonoBehaviour
     [Header("Loading")]
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject mainMenu;
+
+    private PanelAnimator infoObjAnimator;
     
     // Start is called before the first frame update
     private void Start()
     {
         loadingScreen.SetActive(false);
         mainMenu.SetActive(true);
-        if(infoObj) infoObj.SetActive(infoVisibleAtStart);
+        if (infoObj)
+        {
+            infoObj.TryGetComponent(out infoObjAnimator);
+            ChangeInfoObjState(infoVisibleAtStart);
+        }
         returnBtn.onClick.AddListener(BackToMainMenu);
         if(infoBtn) infoBtn.onClick.AddListener(ShowInfoButton);
     }
 
     private void ShowInfoButton()
     {
-        infoObj.SetActive(!infoObj.activeSelf);
+        ChangeInfoObjState(!infoObj.activeSelf);
+    }
+
+    private void ChangeInfoObjState(bool newState)
+    {
+        if (!newState)
+        {
+            AnimateInfoObj(false);
+            return;
+        }
+        
+        infoObj.SetActive(true);
+        AnimateInfoObj(true);
+    }
+
+    private void AnimateInfoObj(bool isActive)
+    {
+        if (infoObjAnimator == null) return;
+        
+        if (isActive) infoObjAnimator.Appear();
+        else infoObjAnimator.Disappear();
     }
 
     private void BackToMainMenu()
