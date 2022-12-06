@@ -28,6 +28,7 @@ public static class Receiver
 		float,
 		string> onFacemeshTransformReceived;
 
+	//Set callbacks
 	public static void Activate()
 	{
 		if (!isActivated)
@@ -38,12 +39,14 @@ public static class Receiver
 		}
 	}
 
+	//Target transform (Vtt) callback
 	[MonoPInvokeCallback(typeof(delegate_Vtt))]
 	private static void TargetVtt(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov)
 	{
 		onTargetTransformReceived?.Invoke(position, rotation, scale, cameraFov);
 	}
 
+	//Face transform (Vft) callback
 	[MonoPInvokeCallback(typeof(delegate_Vft))]
 	private static void TargetVft(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov, string faceMeshData)
 	{

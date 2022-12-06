@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Controllers;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Events;
 
 public class MasksController : MonoBehaviour
 {
@@ -11,6 +11,7 @@ public class MasksController : MonoBehaviour
     [SerializeField] private GameObject[] masksPrefabs;
     [SerializeField] private Button nextMaskButton;
     [SerializeField] private MasksScrolling scrolling;
+    [SerializeField] private FaceMesh faceMesh;
 
     private Queue<GameObject> masksQueue;
     private GameObject currentMask;
@@ -19,6 +20,7 @@ public class MasksController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ProjectEvents.onFaceMeshHided += HideFaceMesh;
         EnableMask(currentMaskIndex);
         nextMaskButton.onClick.AddListener(NextMask);
         scrolling.onSelectedMaskChanged += ChangeMask;
@@ -81,6 +83,11 @@ public class MasksController : MonoBehaviour
             currentMask = Instantiate(newMask, masksContainer);
             masksQueue.Enqueue(newMask);
         }
+    }
+
+    private void HideFaceMesh(bool isHided)
+    {
+        faceMesh.HideFacemesh(isHided);
     }
 
     private void OnDestroy()

@@ -14,6 +14,7 @@ public class TrackController : MonoBehaviour
     private float SmoothMax = 0.25f;
 
     //Private
+    [Header ("Lerp speed")]
     private static readonly float FOVLerpSpeed = 15f;
     private static readonly float PosLerpSpeed = 15f;
     private static readonly float RotLerpSpeed = 15f;
@@ -30,6 +31,7 @@ public class TrackController : MonoBehaviour
 
     private int stackElementIndex = 0;
     
+    //External function. Should be called when scene is loaded
     [DllImport("__Internal")]
     protected static extern int LoadScene(string message, string index, string controller, string targetImg);
 
@@ -37,8 +39,7 @@ public class TrackController : MonoBehaviour
         isTracking = false;
         renderLayerGO.SetActive(false);
     }
-
-    //Functions
+    
     protected virtual void Start()
     {
         SetupBuffer();
@@ -50,19 +51,21 @@ public class TrackController : MonoBehaviour
     {
         if (isTracking && renderLayerGO.activeSelf)
         {
-            NewLerpSceneTransform(positions, rotations, scales, cameraFOVs);
+            LerpSceneTransform(positions, rotations, scales, cameraFOVs);
         }
     }
 
 
     //Public functions
+    //Called automatically when the target is found
     public void StartTracking() 
     {
         renderLayerGO.SetActive(true);
         isTracking = true;
         EventBus.onTargetFound?.Invoke();
     }
-   
+    
+    //Called automatically when the target is tracking
     protected void Tracking() 
     {
         if (!isTracking)
@@ -72,6 +75,7 @@ public class TrackController : MonoBehaviour
         EventBus.onTargetTracking?.Invoke();
     }
 
+    //Called automatically when the target is lost
     public void StopTracking()
     {
         isTracking = false;
@@ -94,6 +98,7 @@ public class TrackController : MonoBehaviour
         cameraFOVs[0] = 60;
     }
 
+    //Add received transform to buffer
     protected void AddToBuffer(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFOV)
     {
         positions[stackElementIndex] = position;
@@ -109,7 +114,8 @@ public class TrackController : MonoBehaviour
         }
     }
 
-    private void NewLerpSceneTransform(Vector3[] pos, Quaternion[] rot, Vector3[] sc, float[] camFOVs)
+    //Smooth change scene transform (position, rotation, scale, camera field of view).
+    private void LerpSceneTransform(Vector3[] pos, Quaternion[] rot, Vector3[] sc, float[] camFOVs)
     {
         if (smoothScene)
         {

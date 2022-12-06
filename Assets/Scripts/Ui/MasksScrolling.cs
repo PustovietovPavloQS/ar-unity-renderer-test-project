@@ -12,6 +12,9 @@ public class MasksScrolling : MonoBehaviour
     private float snapSpeed;
     [SerializeField, Range(1f, 20f)]
     private float scaleSpeed;
+    [SerializeField] private float buttonsMaxSpacing;
+    [SerializeField] private float buttonsMinSpacing;
+    [SerializeField] private float buttonsSize;
     [Header("Other Objects")]
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private GameObject[] maskButtons;
@@ -28,6 +31,7 @@ public class MasksScrolling : MonoBehaviour
     void Start()
     {
         contentRect = GetComponent<RectTransform>();
+        ArrangeMasks();
         masksPos = new Vector2[maskButtons.Length];
         masksScale = new Vector2[maskButtons.Length];
         
@@ -61,7 +65,7 @@ public class MasksScrolling : MonoBehaviour
                 }
             }
             
-            float scale = Mathf.Clamp(1 - distance / (contentRect.rect.width / 2f), 0f, 1f);
+            float scale = Mathf.Clamp(1 - distance / (contentRect.rect.width / 2f), 0.25f, 1f);
             masksScale[i].x = Mathf.SmoothStep(maskButtons[i].transform.localScale.x, scale, scaleSpeed * Time.fixedDeltaTime);
             masksScale[i].y = Mathf.SmoothStep(maskButtons[i].transform.localScale.y, scale, scaleSpeed * Time.fixedDeltaTime);
             maskButtons[i].transform.localScale = masksScale[i];
@@ -81,6 +85,23 @@ public class MasksScrolling : MonoBehaviour
     {
         isScrolling = scroll;
         if (scroll) scrollRect.inertia = true;
+    }
+
+    private void ArrangeMasks()
+    {
+        float btnSpace = contentRect.rect.width / maskButtons.Length;
+        if (buttonsMinSpacing + buttonsSize > btnSpace) btnSpace = buttonsMinSpacing + buttonsSize;
+        if (btnSpace > buttonsMaxSpacing + buttonsSize) btnSpace = buttonsMaxSpacing + buttonsSize;
+
+        int counter = 0;
+        foreach (var button in maskButtons)
+        {
+            float newXValue = (-contentRect.rect.width/2) + counter * btnSpace + btnSpace / 2;
+            var position = button.transform.localPosition;
+            position = new Vector3(newXValue, position.y, position.z);
+            button.transform.localPosition = position;
+            counter++;
+        }
     }
 
     private void RecalculateCurrentMask()

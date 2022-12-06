@@ -4,18 +4,19 @@ using UnityEngine;
 public class FaceMesh : MonoBehaviour
 {
     private Mesh mesh;
+    FacemeshModelAnimation model;
     
     public void HideFacemesh(bool state) 
     {
         gameObject.GetComponent<MeshRenderer>().enabled = !state;
     }
 
+    //Set new facemesh vertices
     public void RecalculateFaceMesh(string str)
     {
         if (mesh == null)
         {
             mesh = GetComponent<MeshFilter>().mesh;
-            return;
         }
 
         float[] faceMeshData = StringToFloatArray(str);
@@ -28,11 +29,25 @@ public class FaceMesh : MonoBehaviour
         mesh.vertices = positions;
         mesh.RecalculateBounds();
         mesh.RecalculateNormals();
+
+
+
+        if (model == null)
+        {
+            model = GetComponent<FacemeshModelAnimation>();
+        }
+
+        Vector3[] temp = mesh.vertices;
+        for (int i = 0; i < temp.Length; i++)
+        {
+            temp[i] = transform.TransformPoint(temp[i]);
+        }
+        model.Animate(temp);
     }
 
-    public float[] StringToFloatArray(string str) 
+    private float[] StringToFloatArray(string str) 
     {
-        string[] strArr = str.Split('\u002C');
+        string[] strArr = str.Split('\u002C');              //Split array by comma (,)
         float[] floats = new float[strArr.Length];
 
         for (int i = 0; i < strArr.Length; i++)

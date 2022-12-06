@@ -35,6 +35,7 @@ public class TargetTrackController : TrackController
         }
     }
 
+    //Called automatically when target image or surface is tracking
     protected void Tracking(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFOV)
     {
         Tracking();

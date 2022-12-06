@@ -27,9 +27,10 @@ public class FaceTrackController : TrackController
     protected override void Start()
     {
         base.Start();
-        faceMesh.HideFacemesh(hideFacemesh);
+        faceMesh.HideFacemesh(hideFacemesh);        //Hide default facemesh if necessary
     }
 
+    //Called automatically when face is tracking
     protected void Tracking(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFOV, string facemeshData)
     {
         Tracking();

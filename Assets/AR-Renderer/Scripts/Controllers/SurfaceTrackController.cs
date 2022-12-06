@@ -12,6 +12,7 @@ public class SurfaceTrackController : TargetTrackController
         LoadScene("surface", sceneIndex.ToString(), gameObject.name,null);
     }
 
+    //Must be called manually to start scanning the surface
     public void ScanSurface() 
     {
         int sceneIndex = SceneManager.GetActiveScene().buildIndex;
