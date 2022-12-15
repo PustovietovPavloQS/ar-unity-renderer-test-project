@@ -1,4 +1,4 @@
-##To animate a custom model, follow these steps:
+## To animate a custom model, follow these steps:
 
 ## In Blender
 1. Open "Assets/AR-Renderer/FaceMesh/Blender/FaceRig.blend" file in [Blender](https://www.blender.org/download/).
@@ -15,7 +15,7 @@ Additional information:
 1. Don't move bones, otherwise you model will be broken in Unity.
 2. You can use only bones which you need. Other bones can be deleted.
 
-##In Unity
+## In Unity
 1. Import your model into Unity.
 2. Place it on scene (For more detailed information check "Face recognition" section in "Readme.md" file in project "Assets" folder).
 3. In hierarchy select "FaceMesh" game object and expand "Facemesh Model Animation (Script)" (if it's collapsed). This script has a field "Bones". It's an array of Transforms.

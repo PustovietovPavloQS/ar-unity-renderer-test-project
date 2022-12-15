@@ -31,22 +31,32 @@ public class SceneController : MonoBehaviour
         if (infoObj)
         {
             infoObj.TryGetComponent(out infoObjAnimator);
-            ChangeInfoObjState(infoVisibleAtStart);
+            ChangeInfoObjState(!infoVisibleAtStart);
         }
         returnBtn.onClick.AddListener(BackToMainMenu);
         if(infoBtn) infoBtn.onClick.AddListener(ShowInfoButton);
     }
 
-    private void ShowInfoButton()
+    public void CloseInfoPanel()
     {
-        ChangeInfoObjState(!infoObj.activeSelf);
+        AnimateInfoObj(false);
     }
 
-    private void ChangeInfoObjState(bool newState)
+    private void ShowInfoButton()
     {
-        if (!newState)
+        ChangeInfoObjState(infoObj.activeSelf);
+    }
+
+    private void ChangeInfoObjState(bool objState)
+    {
+        if (infoObjAnimator == null) return;
+        if (objState)
         {
-            AnimateInfoObj(false);
+            if (infoObjAnimator.ActiveState is PanelState.AnimatingDown)
+            {
+                AnimateInfoObj(true);
+            }
+            else AnimateInfoObj(false);
             return;
         }
         
@@ -56,8 +66,6 @@ public class SceneController : MonoBehaviour
 
     private void AnimateInfoObj(bool isActive)
     {
-        if (infoObjAnimator == null) return;
-        
         if (isActive) infoObjAnimator.Appear();
         else infoObjAnimator.Disappear();
     }

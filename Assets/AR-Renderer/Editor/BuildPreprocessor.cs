@@ -10,6 +10,8 @@ class BuildPrecrocessor : IPreprocessBuildWithReport
     public void OnPreprocessBuild(BuildReport report)
     {
         FileUtil.DeleteFileOrDirectory("Assets/WebGLTemplates/AR-Renderer/Targets");
+        FileUtil.DeleteFileOrDirectory("Assets/WebGLTemplates/AR-Renderer/Targets.meta");
+
         FileUtil.CopyFileOrDirectory("Assets/Targets", "Assets/WebGLTemplates/AR-Renderer/Targets");
     }
 }

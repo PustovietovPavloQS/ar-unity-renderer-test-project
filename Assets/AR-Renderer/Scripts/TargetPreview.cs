@@ -17,4 +17,8 @@ public class TargetPreview : MonoBehaviour
         material.mainTextureScale = new Vector2(-1, -1);
         GetComponent<MeshRenderer>().material = material;
     }
+
+    public void Display(bool state) {
+        GetComponent<MeshRenderer>().enabled = state;
+    }
 }

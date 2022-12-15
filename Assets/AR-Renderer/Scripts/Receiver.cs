@@ -12,14 +12,15 @@ public static class Receiver
 	[DllImport("__Internal")]
 	private static extern void set_callbacks(delegate_Vtt vtt, delegate_Vft vft);
 
-	delegate void delegate_Vtt(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov);
+	delegate void delegate_Vtt(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov, int targetIndex);
 	delegate void delegate_Vft(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov, string faceMeshData);
 
 	public static Action<
 		Vector3,
 		Quaternion,
 		Vector3,
-		float > onTargetTransformReceived;
+		float,
+		int> onTargetTransformReceived;
 
 	public static Action<
 		Vector3,
@@ -41,9 +42,9 @@ public static class Receiver
 
 	//Target transform (Vtt) callback
 	[MonoPInvokeCallback(typeof(delegate_Vtt))]
-	private static void TargetVtt(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov)
+	private static void TargetVtt(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov, int targetIndex)
 	{
-		onTargetTransformReceived?.Invoke(position, rotation, scale, cameraFov);
+		onTargetTransformReceived?.Invoke(position, rotation, scale, cameraFov, targetIndex);
 	}
 
 	//Face transform (Vft) callback

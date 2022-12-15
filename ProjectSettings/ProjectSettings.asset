@@ -530,7 +530,7 @@ PlayerSettings:
   openGLRequireES31AEP: 0
   openGLRequireES32: 0
   m_TemplateCustomTags:
-    BASE_HREF: ar-unity-renderer-test.io/
+    BASE_HREF: ar-renderer--tracking/
     IS_FACE_TRACKING: 
     TRACKING_MODE: 
   mobileMTRendering:

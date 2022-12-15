@@ -56,31 +56,31 @@ public class TrackController : MonoBehaviour
     }
 
 
+
     //Public functions
     //Called automatically when the target is found
-    public void StartTracking() 
+    public virtual void StartTracking(int targetIndex) 
     {
         renderLayerGO.SetActive(true);
         isTracking = true;
-        EventBus.onTargetFound?.Invoke();
+        EventBus.onTargetFound?.Invoke(targetIndex);
     }
     
     //Called automatically when the target is tracking
     protected void Tracking() 
     {
-        if (!isTracking)
+        if (isTracking)
         {
-            StartTracking();
+            EventBus.onTargetTracking?.Invoke();
         }
-        EventBus.onTargetTracking?.Invoke();
     }
 
     //Called automatically when the target is lost
-    public void StopTracking()
+    public virtual void StopTracking(int targetIndex)
     {
         isTracking = false;
         renderLayerGO.SetActive(false);
-        EventBus.onTargetLost?.Invoke();
+        EventBus.onTargetLost?.Invoke(targetIndex);
     }
 
     public void SceneLoadedEvent(int sceneIndex) {

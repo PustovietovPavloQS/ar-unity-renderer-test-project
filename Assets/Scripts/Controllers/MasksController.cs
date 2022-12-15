@@ -2,19 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Controllers;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MasksController : MonoBehaviour
 {
-    [SerializeField] private Transform masksContainer;
-    [SerializeField] private GameObject[] masksPrefabs;
-    [SerializeField] private Button nextMaskButton;
+    [SerializeField] private GameObject[] masksObjects;
     [SerializeField] private MasksScrolling scrolling;
     [SerializeField] private FaceMesh faceMesh;
 
-    private Queue<GameObject> masksQueue;
-    private GameObject currentMask;
     private int currentMaskIndex = 0;
     
     // Start is called before the first frame update
@@ -22,7 +19,6 @@ public class MasksController : MonoBehaviour
     {
         ProjectEvents.onFaceMeshHided += HideFaceMesh;
         EnableMask(currentMaskIndex);
-        nextMaskButton.onClick.AddListener(NextMask);
         scrolling.onSelectedMaskChanged += ChangeMask;
     }
 
@@ -37,52 +33,31 @@ public class MasksController : MonoBehaviour
 
     public void EnableMask(int maskIndex)
     {
-        if(currentMask) Destroy(currentMask.gameObject);
+        if (currentMaskIndex == maskIndex) return;
         
-        var newMaskPrefab = masksPrefabs[maskIndex];
-        currentMask = Instantiate(newMaskPrefab, masksContainer);
-    }
-
-    private void CreateQueue()
-    {
-        masksQueue = new Queue<GameObject>();
-        foreach (var prefab in masksPrefabs)
-        {
-            masksQueue.Enqueue(prefab);
-        }
+        masksObjects[currentMaskIndex].SetActive(false);
+        masksObjects[maskIndex].SetActive(true);
+        currentMaskIndex = maskIndex;
     }
 
     private void NextMask()
     {
-        currentMaskIndex++;
-        if (currentMaskIndex >= masksPrefabs.Length) currentMaskIndex = 0;
-        EnableMask(currentMaskIndex);
-        scrolling.ChangeSelectedMaskButton(currentMaskIndex);
+        int newMaskIndex = currentMaskIndex + 1;
+        if (newMaskIndex >= masksObjects.Length) newMaskIndex = 0;
+        EnableMask(newMaskIndex);
+        scrolling.ChangeSelectedMaskButton(newMaskIndex);
     }
 
     private void ChangeMask(int newIndex)
     {
         if (newIndex == currentMaskIndex) return;
 
-        currentMaskIndex = newIndex;
-        if (currentMaskIndex >= masksPrefabs.Length)
+        if (newIndex >= masksObjects.Length)
         {
             Debug.LogError("You have button for mask but dont have the mask prefab for it");
-            currentMaskIndex = 0;
+            newIndex = 0;
         }
-        EnableMask(currentMaskIndex);
-    }
-    
-    private void UpdateMask()
-    {
-        if(currentMask) Destroy(currentMask.gameObject);
-
-        var newMask = masksQueue.Dequeue();
-        if (newMask)
-        {
-            currentMask = Instantiate(newMask, masksContainer);
-            masksQueue.Enqueue(newMask);
-        }
+        EnableMask(newIndex);
     }
 
     private void HideFaceMesh(bool isHided)

@@ -9,11 +9,6 @@ namespace Controllers
 {
     public class FaceMeshEnabling : MonoBehaviour
     {
-        private void Awake()
-        {
-            ProjectEvents.onFaceMeshHided?.Invoke(false);
-        }
-
         private void OnEnable()
         {
             ProjectEvents.onFaceMeshHided?.Invoke(false);

@@ -83,6 +83,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 956765777742073858, guid: 7869f5399ee260446a282e0459eb0841, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 956765777742073858, guid: 7869f5399ee260446a282e0459eb0841, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 956765777742073858, guid: 7869f5399ee260446a282e0459eb0841, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 956765777742073858, guid: 7869f5399ee260446a282e0459eb0841, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7744552841482706956, guid: 7869f5399ee260446a282e0459eb0841, type: 3}
       propertyPath: m_Name
       value: Mask3

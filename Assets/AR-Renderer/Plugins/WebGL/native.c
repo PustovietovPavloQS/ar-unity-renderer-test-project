@@ -19,10 +19,10 @@ void set_callbacks(
 
 
 
-void EMSCRIPTEN_KEEPALIVE call_cb_vtt(struct Vector3 pos,struct Quaternion rot, struct Vector3 sc, float cFov) {
-	cb_vtt(pos, rot, sc, cFov);			//Target transform
+void EMSCRIPTEN_KEEPALIVE call_cb_vtt(struct Vector3 pos,struct Quaternion rot, struct Vector3 sc, float cFov, int32_t tIdx) {
+	cb_vtt(pos, rot, sc, cFov, tIdx);		//Target transform
 }
 
 void EMSCRIPTEN_KEEPALIVE call_cb_vft(struct Vector3 pos,struct Quaternion rot, struct Vector3 sc, float cFov, const char *fm) {
-	cb_vft(pos, rot, sc, cFov, fm);		//Face transform
+	cb_vft(pos, rot, sc, cFov, fm);			//Face transform
 }

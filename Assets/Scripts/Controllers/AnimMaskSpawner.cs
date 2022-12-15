@@ -7,14 +7,6 @@ namespace Controllers
     {
         [SerializeField] private Transform[] bones;
 
-        private void Start()
-        {
-            if (bones != null)
-            {
-                SendBonesToAnimModel();
-            }
-        }
-
         private void OnEnable()
         {
             if (bones != null)
