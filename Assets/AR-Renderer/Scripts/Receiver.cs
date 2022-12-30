@@ -15,20 +15,6 @@ public static class Receiver
 	delegate void delegate_Vtt(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov, int targetIndex);
 	delegate void delegate_Vft(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov, string faceMeshData);
 
-	public static Action<
-		Vector3,
-		Quaternion,
-		Vector3,
-		float,
-		int> onTargetTransformReceived;
-
-	public static Action<
-		Vector3,
-		Quaternion,
-		Vector3,
-		float,
-		string> onFacemeshTransformReceived;
-
 	//Set callbacks
 	public static void Activate()
 	{
@@ -44,13 +30,13 @@ public static class Receiver
 	[MonoPInvokeCallback(typeof(delegate_Vtt))]
 	private static void TargetVtt(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov, int targetIndex)
 	{
-		onTargetTransformReceived?.Invoke(position, rotation, scale, cameraFov, targetIndex);
+        EventBus.onTargetTracking?.Invoke(position, rotation, scale, cameraFov, targetIndex);
 	}
 
 	//Face transform (Vft) callback
 	[MonoPInvokeCallback(typeof(delegate_Vft))]
 	private static void TargetVft(Vector3 position, Quaternion rotation, Vector3 scale, float cameraFov, string faceMeshData)
 	{
-		onFacemeshTransformReceived?.Invoke(position, rotation, scale, cameraFov, faceMeshData);
+        EventBus.onFaceTracking?.Invoke(position, rotation, scale, cameraFov, faceMeshData);
 	}
 }

@@ -22,14 +22,13 @@ public class TargetTrackController : TrackController
 
     protected override void OnEnable()
     {
-        Receiver.Activate();
-        Receiver.onTargetTransformReceived += Tracking;
         base.OnEnable();
+        EventBus.onTargetTracking += Tracking;
     }
 
     private void OnDisable()
     {
-        Receiver.onTargetTransformReceived -= Tracking;
+        EventBus.onTargetTracking -= Tracking;
     }
 
     protected virtual void Awake()

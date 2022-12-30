@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Controllers
 {
@@ -14,15 +15,23 @@ namespace Controllers
 
         private void ClearBones()
         {
-            faceMeshModelAnimation.bones.Clear();
+            //faceMeshModelAnimation.bones.Clear();
+            Array.Clear(faceMeshModelAnimation.bones, 0, faceMeshModelAnimation.bones.Length);
         }
 
         private void SetNewBones(Transform[] bones)
         {
             ClearBones();
-            foreach (var bone in bones)
+            // foreach (var bone in bones)
+            // {
+            //     faceMeshModelAnimation.bones.Add(bone);
+            // }
+
+            faceMeshModelAnimation.bones = new Transform[bones.Length];
+
+            for (int i = 0; i < bones.Length; i++)
             {
-                faceMeshModelAnimation.bones.Add(bone);
+                faceMeshModelAnimation.bones[i] = bones[i];
             }
         }
     }

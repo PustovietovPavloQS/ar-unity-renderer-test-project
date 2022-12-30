@@ -8,14 +8,13 @@ public class FaceTrackController : TrackController
     
     protected override void OnEnable()
     {
-        Receiver.Activate();
-        Receiver.onFacemeshTransformReceived += Tracking;
         base.OnEnable();
+        EventBus.onFaceTracking += Tracking;
     }
 
     private void OnDisable()
     {
-        Receiver.onFacemeshTransformReceived -= Tracking;
+        EventBus.onFaceTracking -= Tracking;
     }
 
     private void Awake()

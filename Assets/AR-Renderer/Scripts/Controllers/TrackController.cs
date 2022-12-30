@@ -36,6 +36,7 @@ public class TrackController : MonoBehaviour
     protected static extern int LoadScene(string message, string index, string controller, string targetImg);
 
     protected virtual void OnEnable() {
+        Receiver.Activate();
         isTracking = false;
         renderLayerGO.SetActive(false);
     }
@@ -69,10 +70,6 @@ public class TrackController : MonoBehaviour
     //Called automatically when the target is tracking
     protected void Tracking() 
     {
-        if (isTracking)
-        {
-            EventBus.onTargetTracking?.Invoke();
-        }
     }
 
     //Called automatically when the target is lost

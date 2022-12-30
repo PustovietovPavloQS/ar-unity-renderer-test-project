@@ -6,7 +6,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"D:/Job/UnityProjects/QualitySystems/PPust/ImgTracking;D:/Job/UnityProjects/QualitySystems/PPust/UnitedAppTest;D:/Job/UnityProjects/QualitySystems/PPust/ImageTest;D:/Job/UnityProjects/QualitySystems/PPust/DeployTest;D:/Job/Builds/Images;D:/Job/Builds/Surface;D:/Job/Builds/Build;;;\"}"
+                "value": "{\"m_Value\":\"C:/Projects/ar-unity-test;C:/Projects/ar-unity-image;C:/Projects/ar-unity-renderer-test.io;D:/Job/UnityProjects/QualitySystems/PPust/ImgTracking;D:/Job/UnityProjects/QualitySystems/PPust/UnitedAppTest;D:/Job/UnityProjects/QualitySystems/PPust/ImageTest;D:/Job/UnityProjects/QualitySystems/PPust/DeployTest;D:/Job/Builds/Images;D:/Job/Builds/Surface;D:/Job/Builds/Build\"}"
             },
             {
                 "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",

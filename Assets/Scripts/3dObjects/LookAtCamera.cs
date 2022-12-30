@@ -15,11 +15,11 @@ public class LookAtCamera : MonoBehaviour
     void Update()
     {
         #if UNITY_EDITOR
-        HandleLooking();
+        HandleLooking(default, default, default, default, default);
         #endif
     }
 
-    private void HandleLooking()
+    private void HandleLooking(Vector3 position, Quaternion rotation, Vector3 scale, float fov, int targetIndex)
     {
         if(mainCamera == null) mainCamera = Camera.main;
         var lookVector = mainCamera.transform.position - transform.position;
@@ -28,7 +28,7 @@ public class LookAtCamera : MonoBehaviour
 
     private void OnEnable()
     {
-        HandleLooking();
+        HandleLooking(default, default, default, default, default);
         EventBus.onTargetTracking += HandleLooking;
     }
 
